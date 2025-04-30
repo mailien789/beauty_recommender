@@ -1,3 +1,2 @@
 ratings_with_titles.csv filter=lfs diff=lfs merge=lfs -text
 ratings_Beauty.csv filter=lfs diff=lfs merge=lfs -text
-*.csv filter=lfs diff=lfs merge=lfs -text
