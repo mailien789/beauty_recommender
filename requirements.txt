@@ -2,4 +2,6 @@ streamlit
 pandas
 plotly
 streamlit-extras
-scikit-surprise
+numpy
+cython
+git+https://github.com/NicolasHug/Surprise.git

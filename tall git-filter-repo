@@ -1,0 +1,31 @@
+[33mcommit 88301c7fe2eea2d7843737873168321f1550f417[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: mailien789 <vumailien0@gmail.com>
+Date:   Wed Apr 30 23:04:09 2025 +0700
+
+    Recommit large CSVs with Git LFS
+
+ .gitattributes          |       3 [32m+[m
+ ratings_Beauty.csv      | 2023074 [32m+[m[31m------------------------------------------[m
+ ratings_with_titles.csv | 2023346 [32m+[m[31m-------------------------------------------[m
+ 3 files changed, 9 insertions(+), 4046414 deletions(-)
+
+[33mcommit aad818be3626f65dc5e34f91c33130c7a10cc9ff[m
+Author: mailien789 <vumailien0@gmail.com>
+Date:   Wed Apr 30 22:53:39 2025 +0700
+
+    Initial commit
+
+ app.py                  |     100 [32m+[m
+ ratings_Beauty.csv      | 2023071 [32m+++++++++++++++++++++++++++++++++++++++++++[m
+ ratings_with_titles.csv | 2023343 [32m++++++++++++++++++++++++++++++++++++++++++++[m
+ requirements.txt        |       5 [32m+[m
+ 4 files changed, 4046519 insertions(+)
+
+[33mcommit ddcb781380260e96b6f8d306c4ec266fc8cd06fe[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: mailien789 <vumailien0@gmail.com>
+Date:   Wed Apr 30 22:50:24 2025 +0700
+
+    first commit
+
+ README.md | 1 [32m+[m
+ 1 file changed, 1 insertion(+)
