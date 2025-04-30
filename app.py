@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
-from surprise import Dataset, Reader, SVD
-from surprise.model_selection import train_test_split
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
 import random
 
 # Cấu hình giao diện
@@ -41,27 +41,29 @@ def popularity_based_recommendation(df, top_n=10):
     top_products = product_popularity.sort_values('RatingCount', ascending=False).head(top_n)
     return top_products[['ProductTitle', 'RatingCount']]
 
-# Part II: Collaborative Filtering
+# Part II: Collaborative Filtering (dùng sklearn cosine similarity)
 def collaborative_filtering_recommendation(df, user_id, top_n=10):
-    reader = Reader(rating_scale=(1, 5))
-    data = Dataset.load_from_df(df[['UserId', 'ProductTitle', 'Rating']], reader)
-    trainset, _ = train_test_split(data, test_size=0.25, random_state=42)
+    user_product_matrix = df.pivot_table(index='UserId', columns='ProductTitle', values='Rating').fillna(0)
 
-    algo = SVD()
-    algo.fit(trainset)
+    if user_id not in user_product_matrix.index:
+        return pd.DataFrame({'ProductTitle': ['User không tồn tại'], 'PredictedRating': [0]})
 
-    product_titles = df['ProductTitle'].unique()
-    user_rated_products = df[df['UserId'] == user_id]['ProductTitle'].tolist()
-    products_to_predict = [i for i in product_titles if i not in user_rated_products]
+    similarity_matrix = cosine_similarity(user_product_matrix)
+    similarity_df = pd.DataFrame(similarity_matrix, index=user_product_matrix.index, columns=user_product_matrix.index)
 
-    if not products_to_predict:
+    similar_users = similarity_df[user_id].sort_values(ascending=False).drop(user_id).head(5).index
+
+    similar_ratings = user_product_matrix.loc[similar_users]
+    mean_ratings = similar_ratings.mean().sort_values(ascending=False)
+
+    already_rated = user_product_matrix.loc[user_id]
+    unrated_products = already_rated[already_rated == 0].index
+    recommended = mean_ratings[unrated_products].head(top_n)
+
+    if recommended.empty:
         return pd.DataFrame({'ProductTitle': ['User đã đánh giá tất cả sản phẩm'], 'PredictedRating': [5]})
 
-    predictions = [(product, algo.predict(user_id, product).est) for product in products_to_predict]
-    predictions.sort(key=lambda x: x[1], reverse=True)
-
-    top_recommendations = predictions[:top_n]
-    return pd.DataFrame(top_recommendations, columns=['ProductTitle', 'PredictedRating'])
+    return pd.DataFrame({'ProductTitle': recommended.index, 'PredictedRating': recommended.values})
 
 # Part III: Cold start
 def cold_start_recommendation(df, top_n=10):
@@ -97,4 +99,4 @@ elif option == "🌸 Cold Start":
     st.dataframe(result, use_container_width=True)
 
 st.markdown("---")
-st.write("© 2025 | Beauty Recommender by [Bạn đó 😎]")
+st.write("© 2025 | Beauty Recommender by Liên Tiên 😎")
