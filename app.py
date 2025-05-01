@@ -5,15 +5,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from scipy.sparse import csr_matrix
 import random
 import os
-import gdown
 
-def download_file_from_drive():
-    file_id = "1abcDEFgHIJKlmnOPQ1234567"
-    url = f"https://drive.google.com/uc?id=1fQUwBibHbJ3qlvbs6NwpRy8obAplXvX4"
-    output = "ratings_with_titles.csv"
-    
-    if not os.path.exists(output):
-        gdown.download(url, output, quiet=False)
 
 # Cấu hình giao diện
 st.set_page_config(page_title="Beauty Recommender 💄✨", page_icon="💄", layout="wide")
@@ -37,7 +29,7 @@ st.markdown(page_bg, unsafe_allow_html=True)
 # Đọc dữ liệu
 @st.cache_data
 def load_data():
-    download_file_from_drive()
+
 
     df = pd.read_csv("ratings_with_titles.csv")
 
